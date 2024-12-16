@@ -1,0 +1,44 @@
+*{
+    margin: 0px;
+}
+
+body {
+    background-color: rgb(205, 255, 200);
+    justify-items: center;
+    align-content: center;
+    height: 50vw;
+}
+
+#Bolha{
+    display: block;
+    background-color:rgb(145, 219, 139);
+    border-radius: 100px;
+    text-align: center;
+    padding: 20px;
+    width: max-content;
+    height: max-content;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+#form {
+    display: flex;
+    flex-direction: column;
+    background-color:rgb(145, 219, 139);
+    border-radius: 100px;
+}
+
+#enviar{
+    width: fit-content;
+}
+
+#Lista{
+    background-color:rgb(145, 219, 139);
+    border-radius: 30px;
+    list-style: none;
+    color: white;
+}
