@@ -1,8 +1,5 @@
-package br.edu.ifpr.pgua.eic.tads;
-
-import br.edu.ifpr.pgua.eic.tads.controllers.IndexController;
-import br.edu.ifpr.pgua.eic.tads.utils.JavalinUtils;
-import io.javalin.Javalin;
+import controllers.IndexController;
+import utils.JavalinUtils;
 
 public class App {
     public static void main( String[] args ){
