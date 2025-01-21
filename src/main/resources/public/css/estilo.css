@@ -1,44 +1,67 @@
-*{
-    margin: 0px;
-}
-
 body {
-    background-color: rgb(205, 255, 200);
-    justify-items: center;
-    align-content: center;
-    height: 50vw;
-}
-
-#Bolha{
-    display: block;
-    background-color:rgb(145, 219, 139);
-    border-radius: 100px;
-    text-align: center;
-    padding: 20px;
-    width: max-content;
-    height: max-content;
-    color: white;
-}
-
-a {
-    text-decoration: none;
-    color: black;
-}
-
-#form {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    background-color:  #fafafa; /*cor de fundo do site*/
     display: flex;
-    flex-direction: column;
-    background-color:rgb(145, 219, 139);
-    border-radius: 100px;
+    justify-content: center;
+    padding: 40px; 
+    
 }
 
-#enviar{
-    width: fit-content;
+header {
+    text-align: center;
+    background-color: #b6c7ff; /*Menu*/
+    padding: 30px;
+    color: rgb(0, 0, 0); /*letra do menu*/
+    border-radius: 8px;
+    margin-bottom: 20px;
+     box-shadow: 11px 11px 6px rgba(16, 32, 0, 0.1);
 }
 
-#Lista{
-    background-color:rgb(145, 219, 139);
-    border-radius: 30px;
-    list-style: none;
-    color: white;
+main {
+    display: flex;
+    justify-content: space-between;
+    gap: 70px;
+}
+
+.card {
+    background: #c0c1ff; /*caixinha dos cadastro*/
+    border-radius: 8px;
+    box-shadow: 11px 4px 6px rgba(16, 32, 0, 0.1);
+    padding: 50px;
+    text-align: center;
+    min-width: 300px; 
+    min-height: 400px;
+    transition: transform 0.5s ease-out;  /*efeito para animação*/
+}
+
+.card h2 {
+    margin-bottom: 20px;
+    color:rgb(7, 0, 0); /*cor das letras do cadastro*/
+    font-size: 24px;
+}
+
+.card a {
+    display: block;
+    margin: 10px ;
+    padding: 20px;
+    background: #ffffff; /*cor das caixinhas de dentro do cadastro*/
+    border: none;
+    border-radius: 11px;
+    font-size: 18px;
+    cursor: pointer;
+  
+}
+
+.card button:hover ,.card a:hover  {
+    background: #ecebff; /*cor qnd passa mouse em cima*/
+}
+
+.card:hover {
+    transform: scale(1.05);  /*ANIMAÇÃO MUITOO LEGAL */
+}
+
+a{
+    text-decoration: none; /*pra n fica o link*/
+    color: rgb(0, 0, 0);
 }
