@@ -1,44 +1,44 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #000000;
     background-color:  #fafafa; /*cor de fundo do site*/
-    display: flex;
-    justify-content: center;
-    padding: 40px; 
-    
+    display: block;
+    padding: 30px;
+    justify-items: center;
 }
 
 header {
+    display: block;
+    justify-items: center;
+    justify-self: center;
     text-align: center;
     background-color: #b6c7ff; /*Menu*/
     padding: 30px;
-    color: rgb(0, 0, 0); /*letra do menu*/
+    color: #384566; /*letra do menu*/
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    width: 100%;
     box-shadow: 11px 11px 6px rgba(16, 32, 0, 0.1);
 }
 
 main {
-    display: flex;
-    justify-content: space-between;
-    gap: 70px;
+    display: block;
+    justify-items: center;
 }
 
 .card {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    background: #c0c1ff; /*caixinha dos cadastro*/
+    background: #b6c7ff; /*caixinha dos cadastro*/
     border-radius: 8px;
     box-shadow: 11px 4px 6px rgba(16, 32, 0, 0.1);
     padding: 20px;
     text-align: center;
-    width: fit-content;
-    height: fit-content;
+    margin: 20px;
+    width: 90%;
+    transition: transform 0.2s ease-out; /*tempo da animação*/
 }
 
 .card h2 {
     margin-bottom: 20px;
-    color:rgb(7, 0, 0); /*cor das letras do cadastro*/
+    color:#384566; /*cor das letras do cadastro*/
     font-size: 24px;
 }
 
@@ -57,16 +57,17 @@ main {
     background: #ecebff; /*cor qnd passa mouse em cima*/
 }
 
-.card {
-    transition: transform 0.3s ease-out;
-}
-
 .card:hover {
-    transform: scale(1.05);  /*ANIMAÇÃO MUITOO LEGAL */
+    transform: scale(1.04);  /*ANIMAÇÃO MUITOO LEGAL */
     
 }
 
 a{
     text-decoration: none; /*pra n fica o link*/
-    color: rgb(0, 0, 0);
+    color: #384566;
+}
+
+#Opcoes{
+    display: flex;
+    justify-content: center;
 }
