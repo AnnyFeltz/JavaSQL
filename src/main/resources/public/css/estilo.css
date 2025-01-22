@@ -15,7 +15,7 @@ header {
     color: rgb(0, 0, 0); /*letra do menu*/
     border-radius: 8px;
     margin-bottom: 20px;
-     box-shadow: 11px 11px 6px rgba(16, 32, 0, 0.1);
+    box-shadow: 11px 11px 6px rgba(16, 32, 0, 0.1);
 }
 
 main {
@@ -25,14 +25,15 @@ main {
 }
 
 .card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     background: #c0c1ff; /*caixinha dos cadastro*/
     border-radius: 8px;
     box-shadow: 11px 4px 6px rgba(16, 32, 0, 0.1);
-    padding: 50px;
+    padding: 20px;
     text-align: center;
-    min-width: 300px; 
-    min-height: 400px;
-    transition: transform 0.5s ease-out;  /*efeito para animação*/
+    width: fit-content;
+    height: fit-content;
 }
 
 .card h2 {
@@ -49,8 +50,7 @@ main {
     border: none;
     border-radius: 11px;
     font-size: 18px;
-    cursor: pointer;
-  
+    cursor: pointer; 
 }
 
 .card button:hover ,.card a:hover  {
