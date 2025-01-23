@@ -8,20 +8,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutoManager {
+public class Manager {
 
     private List<Produto> produto;
+    private List<Venda> venda;
 
-    public ProdutoManager() {
+    public Manager() {
         produto = new ArrayList<>();
+        venda = new ArrayList<>();
     }
 
-    public void add(Produto p) {
+    //#region Produto
+
+    //adicionar
+    public void addProduto(Produto p) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
             String sql = "";
             PreparedStatement pstm = con.prepareStatement(sql);
+
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -30,7 +37,8 @@ public class ProdutoManager {
         this.produto.add(p);
     }
 
-    public void update(Produto p) {
+    //atualizar
+    public void updateProduto(Produto p) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
@@ -42,9 +50,45 @@ public class ProdutoManager {
         }
     }
 
+    //pegar/listar 
     public List<Produto> getProduto() {
         this.produto.clear();
 
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+
+            String sql = "SELECT * FROM ESTOQUE_PRODUTO WHERE ativo = true";
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                double preco = rs.getDouble("preco");
+                int quantidadeEstoque = rs.getInt("quantidade_estoque");
+                boolean ativo = rs.getBoolean("ativo");
+
+                Produto p = new Produto(id, nome, descricao, preco, quantidadeEstoque, ativo);
+                this.produto.add(p);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return this.produto;
+    }
+
+    //desativar produto
+    
+    //#endregion
+
+    //#region Venda
+
+    //pegar/listar
+    public List<Venda> getVenda() {
+        this.venda.clear();
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
@@ -61,8 +105,8 @@ public class ProdutoManager {
             System.out.println(e.getMessage());
         }
 
-        return this.produto;
+        return this.venda;
     }
-
+    //#endregion
 }
 

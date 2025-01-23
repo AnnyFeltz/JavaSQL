@@ -1,11 +1,13 @@
 import controllers.IndexController;
+import models.Manager;
 import utils.JavalinUtils;
 
 public class App {
     public static void main( String[] args ){
         var app = JavalinUtils.makeApp(1234);
         
-        IndexController indexController = new IndexController();
+        Manager manager = new Manager();
+        IndexController indexController = new IndexController(manager);
         
         app.get("/", indexController.get);
         app.get("/produto-adicionar", indexController.adicionarProduto);

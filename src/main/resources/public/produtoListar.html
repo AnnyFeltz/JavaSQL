@@ -16,6 +16,18 @@
     3 ou 4 colunas de produtos, se precisar faz a animação q quiser,
     aé e não coloca o estoque
     -->
+
+    <!--fiz esse bem simples pq eu precidava testar e vc ainda não tinha feito-->
+    <h1>Lista de Produtos</h1>
+    <ul>
+        <#list list as produto>
+            <li>
+                Nome: ${produto.nome} <br>
+                Preço: ${produto.preco} <br>
+            </li>
+        </#list>
+    </ul>
+
     <a href="/">Voltar a Página Inicial</a>
 </body>
 

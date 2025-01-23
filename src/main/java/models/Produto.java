@@ -23,6 +23,21 @@ public class Produto {
         this.ativo = ativo;
     }
 
+    public Produto(int id, String nome, String descricao, double preco, boolean ativo) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.ativo = ativo;
+    }
+
+    public Produto(int id, String nome, double preco, int quantidadeEstoque) {
+        this.id = id;
+        this.nome = nome;
+        this.preco = preco;
+        this.quantidadeEstoque = quantidadeEstoque;
+    }
+
     //#region Getters e Setters
     public int getId() {
         return id;
