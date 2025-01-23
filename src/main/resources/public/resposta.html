@@ -1,0 +1,83 @@
+/* <!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Realizado</title>
+    <style>
+      /*  body {
+            font-family: Arial, sans-serif;
+            background-color: #e8f4f8;
+            color: #000000; /*letras
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #e7f0e7;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 10px 6px 9px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #000500;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #000000;
+            background-color: #000000;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        a:hover {
+            background-color: #000000;
+        }
+
+        */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>${mensagem}</h1>
+        <p><strong>Nome:</strong> ${nome}</p>
+
+        <#if descrição
+            <p><strong>Descrição:</strong> ${descrição}</p>
+        </#if>
+
+        <#if preço>
+            <p><strong>Preço:</strong> ${preço}</p>
+        </#if>
+
+        <#if quantidade>
+            <p><strong>Quantidade:</strong> ${quantidade}</p>
+        </#if>
+
+   
+        <a href="/">Voltar</a>
+    </div>
+</body>
+
+</html>
+
