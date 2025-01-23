@@ -71,3 +71,65 @@ a{
     display: flex;
     justify-content: center;
 }
+
+/*ADD PRODUTO*/
+ 
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+ 
+    
+}
+
+.form-container {
+    background-color: #b6c7ff;
+    padding: 60px;
+    border-radius: 30px;
+    box-shadow: 10px 2px 4px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    height: 400px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input {
+    margin-bottom: 30px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+}
+
+button {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+}
+
+
+
+
+button:hover {
+    background-color: #444;
+}
+

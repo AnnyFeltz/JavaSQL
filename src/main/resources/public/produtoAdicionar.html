@@ -9,14 +9,38 @@
 </head>
 
 <body>
-    <!--
-    fazer formulario de criação com os seguintes componentes
-    nome
-    descrição
-    preço
-    quantidade de estoque
-    -->
-    <a href="/">Voltar a Página Inicial</a>
+    <div class="form-container">
+        <form class="produtoAdicionar-form" method="post" action="/produto"></form>
+
+        <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" placeholder="Digite nome do Produto" required>
+
+            <label for="descrição">Descrição:</label>
+            <input type="text" name="descrição" id="descrição" placeholder="Digite a Descrição do Produto" required>
+
+            <label for="preço">Preço:</label>
+            <input type="text" name="preço" id="preço" placeholder="Digite o Preço do Produto" required>
+
+            
+            <label for="quantidade">Quantidade:</label>
+            <input type="text" name="quantidade" id="quantidade" placeholder="Digite quantidade de Produtos" required>
+
+            <button type="submit">Enviar</button>
+
+            
+
+    </div>
+   
+    
 </body>
 
 </html>   
+
+
+ <!--
+    fazer formulario de criação com os seguintes componentes
+    nome fiz!
+    descrição fiz!
+    preço fiz!
+    quantidade de estoque  fiz!
+    -->
