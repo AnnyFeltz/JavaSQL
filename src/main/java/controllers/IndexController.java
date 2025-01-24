@@ -31,22 +31,27 @@ public class IndexController {
         String descricao = ctx.formParam("descricao");
         double preco = 0.0;
         int quantidadeEstoque = 0;
-
+        boolean ativo = true;
+    
         try {
             preco = Double.parseDouble(ctx.formParam("preco"));
             quantidadeEstoque = Integer.parseInt(ctx.formParam("quantidadeEstoque"));
         } catch (NumberFormatException e) {
             System.out.println("Erro ao converter valores numéricos (preço ou quantidade)");
+            ctx.status(400).result("Erro ao converter valores numéricos.");
+            return;
         }
-
-        
+    
+        Produto produto = new Produto(nome, descricao, preco, quantidadeEstoque, ativo);
+    
+        // Adicionar o produto no banco
+        manager.addProduto(produto);
+    
         Map<String, Object> dados = new HashMap<>();
-
-        dados.putIfAbsent("mensagem", "");
-        dados.put("mensagem", "Cadastrado!");
-        
+        dados.put("mensagem", "Produto cadastrado com sucesso!");
         ctx.render("produtoAdicionar.html", dados);
     };
+    
 
     public Handler atualizarProduto = (Context ctx) -> {
         ctx.render("produtoAtualizar.html");

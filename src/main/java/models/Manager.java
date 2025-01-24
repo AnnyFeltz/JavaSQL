@@ -25,13 +25,14 @@ public class Manager {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
-            String sql = "INSERT INTO ESTOQUE_PRODUTO(nome, descricao, preco, quantidadeEstoque) VALUES (?,?,?,?,)";
+            String sql = "INSERT INTO ESTOQUE_PRODUTO(nome, descricao, preco, quantidade_estoque, ativo) VALUES (?,?,?,?,?)";
             PreparedStatement pstm = con.prepareStatement(sql);
 
             pstm.setString(1, p.getNome());
             pstm.setString(2, p.getDescricao());
             pstm.setDouble(3, p.getPreco());
             pstm.setInt(4, p.getQuantidadeEstoque());
+            pstm.setBoolean(5, p.isAtivo());
 
             //frufru
             int res = pstm.executeUpdate();
@@ -73,14 +74,13 @@ public class Manager {
             ResultSet rs = pstm.executeQuery();
 
             while (rs.next()) {
-                int id = rs.getInt("id");
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
                 double preco = rs.getDouble("preco");
-                int quantidadeEstoque = rs.getInt("quantidade_estoque");
+                int quantidadeEstoque = rs.getInt("quantidadeEstoque");
                 boolean ativo = rs.getBoolean("ativo");
 
-                Produto p = new Produto(id, nome, descricao, preco, quantidadeEstoque, ativo);
+                Produto p = new Produto(nome, descricao, preco, quantidadeEstoque, ativo);
                 this.produto.add(p);
             }
 

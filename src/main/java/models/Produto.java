@@ -1,7 +1,6 @@
 package models;
 
 public class Produto {
-    private int id;
     private String nome;
     private String descricao;
     private double preco;
@@ -14,8 +13,7 @@ public class Produto {
     }
 
     // Construtor com parâmetros
-    public Produto(int id, String nome, String descricao, double preco, int quantidadeEstoque, boolean ativo) {
-        this.id = id;
+    public Produto(String nome, String descricao, double preco, int quantidadeEstoque, boolean ativo) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
@@ -23,29 +21,20 @@ public class Produto {
         this.ativo = ativo;
     }
 
-    public Produto(int id, String nome, String descricao, double preco, boolean ativo) {
-        this.id = id;
+    public Produto(String nome, String descricao, double preco, boolean ativo) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.ativo = ativo;
     }
 
-    public Produto(int id, String nome, double preco, int quantidadeEstoque) {
-        this.id = id;
+    public Produto(String nome, double preco, int quantidadeEstoque) {
         this.nome = nome;
         this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;
     }
 
     //#region Getters e Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
