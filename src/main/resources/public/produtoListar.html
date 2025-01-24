@@ -9,15 +9,37 @@
 </head>
 
 <body>
-    <!--
+    <div class="listagem-container">
+        <h1>Listar Produtos</h1>
+
+     
+        <div class="card-container">
+            <#list lista as produto>
+                <div class="card">
+                    <h2>${produto.nome}</h2>
+                    <p><strong>Descrição:</strong> ${produto.descricao}</p>
+                    <p><strong>Preço:</strong> ${produto.preço}</p>
+                    <p><strong>Quantidade:</strong> ${produto.quantidade}</p>
+                  
+                </div>
+
+
+            </#list>
+
+        </div>
+    </div>
+    </div>
+
+    <a href="/">Voltar a Página Inicial</a>
+
+</body>
+
+</html>
+
+<!--
     fazer o listar dos produtos, 
     queria q cada produto estivesse no seu proprio quadradinho 
     tipo [produto1...] [produto2...],
     3 ou 4 colunas de produtos, se precisar faz a animação q quiser,
     aé e não coloca o estoque
     -->
-
-    <a href="/">Voltar a Página Inicial</a>
-</body>
-
-</html>
