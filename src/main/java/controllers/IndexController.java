@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.javalin.http.Context;
-import io.javalin.http.Handler;
+import io.javalin.http.*;
 import models.Manager;
 import models.Produto;
 
@@ -22,9 +21,31 @@ public class IndexController {
 
     };
 
-    public Handler adicionarProduto = (Context ctx) -> {
+    public Handler getProduto = (Context ctx) -> {
 
         ctx.render("produtoAdicionar.html");
+    };
+
+    public Handler postProduto = (Context ctx) -> {
+        String nome = ctx.formParam("nome");
+        String descricao = ctx.formParam("descricao");
+        double preco = 0.0;
+        int quantidadeEstoque = 0;
+
+        try {
+            preco = Double.parseDouble(ctx.formParam("preco"));
+            quantidadeEstoque = Integer.parseInt(ctx.formParam("quantidadeEstoque"));
+        } catch (NumberFormatException e) {
+            System.out.println("Erro ao converter valores numéricos (preço ou quantidade)");
+        }
+
+        
+        Map<String, Object> dados = new HashMap<>();
+
+        dados.putIfAbsent("mensagem", "");
+        dados.put("mensagem", "Cadastrado!");
+        
+        ctx.render("produtoAdicionar.html", dados);
     };
 
     public Handler atualizarProduto = (Context ctx) -> {

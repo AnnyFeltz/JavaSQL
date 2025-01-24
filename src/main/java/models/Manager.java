@@ -25,10 +25,21 @@ public class Manager {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
-            String sql = "";
+            String sql = "INSERT INTO ESTOQUE_PRODUTO(nome, descricao, preco, quantidadeEstoque) VALUES (?,?,?,?,)";
             PreparedStatement pstm = con.prepareStatement(sql);
 
+            pstm.setString(1, p.getNome());
+            pstm.setString(2, p.getDescricao());
+            pstm.setDouble(3, p.getPreco());
+            pstm.setInt(4, p.getQuantidadeEstoque());
 
+            //frufru
+            int res = pstm.executeUpdate();
+            if (res == 1) {
+                System.out.println("Inserido!");
+            } else {
+                System.out.println("Deu ruim!");
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

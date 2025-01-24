@@ -10,7 +10,10 @@ public class App {
         IndexController indexController = new IndexController(manager);
         
         app.get("/", indexController.get);
-        app.get("/produto-adicionar", indexController.adicionarProduto);
+
+        app.get("/produto-adicionar", indexController.getProduto);
+        app.post("/produto-adicionar", indexController.postProduto);
+
         app.get("/produto-atualizar", indexController.atualizarProduto);
         app.get("/produto-listar", indexController.listarProduto);
         app.get("/produto-vendido", indexController.consultarProduto);
