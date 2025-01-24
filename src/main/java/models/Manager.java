@@ -77,7 +77,7 @@ public class Manager {
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
                 double preco = rs.getDouble("preco");
-                int quantidadeEstoque = rs.getInt("quantidadeEstoque");
+                int quantidadeEstoque = rs.getInt("quantidade_estoque");
                 boolean ativo = rs.getBoolean("ativo");
 
                 Produto p = new Produto(nome, descricao, preco, quantidadeEstoque, ativo);

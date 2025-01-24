@@ -14,16 +14,14 @@
 
      
         <div class="card-container">
-            <#list list as produto>
-                <div class="card">
+            <#list lista as produto>
+                <div class="cardListar">
                     <h2>${produto.nome}</h2>
                     <p><strong>Descrição:</strong> ${produto.descricao}</p>
-                    <p><strong>Preço:</strong> ${produto.preço}</p>
-                    <p><strong>Quantidade:</strong> ${produto.quantidade}</p>
+                    <p><strong>Preço:</strong> ${produto.preco}</p>
+                    <p><strong>Quantidade no Estoque:</strong> ${produto.quantidadeEstoque}</p>
                   
                 </div>
-
-
             </#list>
 
         </div>

@@ -65,11 +65,11 @@ public class IndexController {
 
         //listar produto
     public Handler listarProduto = (Context ctx) -> {
-        List<Produto> list = manager.getProduto();
+        List<Produto> lista = manager.getProduto();
 
         Map<String, Object> dados = new HashMap<>();
 
-        dados.put("list", list);
+        dados.put("lista", lista);
         ctx.render("produtoListar.html", dados);
     };
 
