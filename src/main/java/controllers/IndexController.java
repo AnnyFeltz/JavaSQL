@@ -8,6 +8,7 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import models.Manager;
 import models.Produto;
+import models.Venda;
 
 public class IndexController {
 
@@ -74,7 +75,12 @@ public class IndexController {
     };
 
     public Handler visualizarVenda = (Context ctx) -> {
-        ctx.render("vendaVisualizar.html");
+        List<Venda> lista = manager.getVenda();
+
+        Map<String, Object> dados = new HashMap<>();
+
+        dados.put("lista", lista);
+        ctx.render("vendaVisualizar.html", dados);
     };
 
     public Handler consultarVenda = (Context ctx) -> {

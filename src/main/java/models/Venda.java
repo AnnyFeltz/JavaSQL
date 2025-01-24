@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,13 +15,20 @@ public class Venda {
     private List<ItemVenda> itensVenda;
 
     //construtor
-    public Venda(int id, Date dataVenda, String formaPagamento, double valorTotal, int idCliente, List<ItemVenda> itensVenda) {
+    public Venda(int id, Date dataVenda, String formaPagamento, double valorTotal, int idCliente) {
         this.id = id;
         this.dataVenda = dataVenda;
         this.formaPagamento = formaPagamento;
         this.valorTotal = valorTotal;
         this.idCliente = idCliente;
-        this.itensVenda = itensVenda;
+        this.itensVenda = new ArrayList<>();
+    }
+
+    public Venda(Date dataVenda, String formaPagamento, double valorTotal, int idCliente) {
+        this.dataVenda = dataVenda;
+        this.formaPagamento = formaPagamento;
+        this.valorTotal = valorTotal;
+        this.idCliente = idCliente;
     }
 
     //#region Getters e Setters

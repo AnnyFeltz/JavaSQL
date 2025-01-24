@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Manager {
@@ -103,13 +104,19 @@ public class Manager {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
-            String sql = "";
+            String sql = "SELECT * FROM ESTOQUE_VENDA";
             PreparedStatement pstm = con.prepareStatement(sql);
 
             ResultSet rs = pstm.executeQuery();
 
             while (rs.next()) {
+                Date dataVenda = rs.getDate("data_venda");
+                String formaPagamento = rs.getString("forma_pagamento");
+                double valorTotal = rs.getDouble("valor_total");
+                int idCliente = rs.getInt("id_cliente");
 
+                Venda v = new Venda(dataVenda, formaPagamento, valorTotal, idCliente);
+                this.venda.add(v);
             }
 
         } catch (SQLException e) {
