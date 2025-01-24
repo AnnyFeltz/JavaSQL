@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.javalin.http.*;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import models.Manager;
 import models.Produto;
 
@@ -49,7 +50,12 @@ public class IndexController {
     
         Map<String, Object> dados = new HashMap<>();
         dados.put("mensagem", "Produto cadastrado com sucesso!");
-        ctx.render("produtoAdicionar.html", dados);
+        dados.put("nome", produto.getNome());
+        dados.put("descricao", produto.getDescricao());
+        dados.put("preco", produto.getPreco());
+        dados.put("quantidadeEstoque",produto.getQuantidadeEstoque());
+        dados.put("ativo", produto.isAtivo());
+        ctx.render("resposta.html", dados);
     };
     
 

@@ -4,7 +4,7 @@ import utils.JavalinUtils;
 
 public class App {
     public static void main( String[] args ){
-        var app = JavalinUtils.makeApp(1235);
+        var app = JavalinUtils.makeApp(1234);
         
         Manager manager = new Manager();
         IndexController indexController = new IndexController(manager);

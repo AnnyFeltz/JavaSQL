@@ -1,4 +1,5 @@
-/* <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -62,15 +63,15 @@
         <h1>${mensagem}</h1>
         <p><strong>Nome:</strong> ${nome}</p>
 
-        <#if descricao
+        <#if descricao??>
             <p><strong>Descrição:</strong> ${descricao}</p>
         </#if>
 
-        <#if preco>
+        <#if preco??>
             <p><strong>Preço:</strong> ${preco}</p>
         </#if>
 
-        <#if quantidadeEstoque>
+        <#if quantidadeEstoque??>
             <p><strong>Quantidade:</strong> ${quantidadeEstoque}</p>
         </#if>
 
