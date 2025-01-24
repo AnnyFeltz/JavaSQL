@@ -20,7 +20,6 @@ public class Manager {
     }
 
     //#region Produto
-
     //adicionar
     public void addProduto(Produto p) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
@@ -51,16 +50,63 @@ public class Manager {
     }
 
     //atualizar
-    public void updateProduto(Produto p) {
+    public boolean updateProduto(Produto p) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
-            String sql = "";
+            String sql = "UPDATE ESTOQUE_PRODUTO SET nome = ?, descricao = ?, preco = ?, quantidade_estoque = ? WHERE id = ?";
             PreparedStatement pstm = con.prepareStatement(sql);
+
+            pstm.setString(1, p.getNome());
+            pstm.setString(2, p.getDescricao());
+            pstm.setDouble(3, p.getPreco());
+            pstm.setInt(4, p.getQuantidadeEstoque());
+            pstm.setInt(6, p.getId());
+
+            int res = pstm.executeUpdate();
+
+            return res == 1;  // Retorna true se uma linha foi atualizada, false caso contrário
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;  // Retorna false em caso de erro
         }
+    }
+
+    //procurar produto por id
+    public Produto getProdutoAtualizar(int id) {
+        Produto produto = null; // Inicializando a variável produto
+
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+
+            System.out.println("Conectado!");
+            // SQL corrigido para fazer SELECT e não UPDATE
+            String sql = "SELECT * FROM ESTOQUE_PRODUTO WHERE id = ?";
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            // Definir o parâmetro de ID no SQL
+            pstm.setInt(1, id);
+
+            // Executar a consulta
+            ResultSet rs = pstm.executeQuery();
+
+            // Verificar se encontrou o produto
+            if (rs.next()) {
+                // Criar o objeto Produto a partir do resultado da consulta
+                produto = new Produto(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("descricao"),
+                        rs.getDouble("preco"),
+                        rs.getInt("quantidade_estoque")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar produto por ID: " + e.getMessage());
+        }
+
+        return produto;  // Retorna o produto ou null se não encontrado
     }
 
     //pegar/listar 
@@ -93,11 +139,8 @@ public class Manager {
     }
 
     //desativar produto
-    
     //#endregion
-
     //#region Venda
-
     //pegar/listar
     public List<Venda> getVenda() {
         this.venda.clear();
@@ -126,5 +169,7 @@ public class Manager {
         return this.venda;
     }
     //#endregion
-}
 
+    //#region Item_Venda
+    //#endregion
+}

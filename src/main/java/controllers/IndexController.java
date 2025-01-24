@@ -34,7 +34,7 @@ public class IndexController {
         double preco = 0.0;
         int quantidadeEstoque = 0;
         boolean ativo = true;
-    
+
         try {
             preco = Double.parseDouble(ctx.formParam("preco"));
             quantidadeEstoque = Integer.parseInt(ctx.formParam("quantidadeEstoque"));
@@ -43,28 +43,88 @@ public class IndexController {
             ctx.status(400).result("Erro ao converter valores numéricos.");
             return;
         }
-    
+
         Produto produto = new Produto(nome, descricao, preco, quantidadeEstoque, ativo);
-    
+
         // Adicionar o produto no banco
         manager.addProduto(produto);
-    
+
         Map<String, Object> dados = new HashMap<>();
         dados.put("mensagem", "Produto cadastrado com sucesso!");
         dados.put("nome", produto.getNome());
         dados.put("descricao", produto.getDescricao());
         dados.put("preco", produto.getPreco());
-        dados.put("quantidadeEstoque",produto.getQuantidadeEstoque());
+        dados.put("quantidadeEstoque", produto.getQuantidadeEstoque());
         dados.put("ativo", produto.isAtivo());
         ctx.render("resposta.html", dados);
     };
-    
 
-    public Handler atualizarProduto = (Context ctx) -> {
-        ctx.render("produtoAtualizar.html");
+    public Handler getProdutoAtualizar = (Context ctx) -> {
+        // Recuperar o ID do produto da URL
+        int id = 0;
+        try {
+            id = Integer.parseInt(ctx.pathParam("id"));
+        } catch (NumberFormatException e) {
+            ctx.status(400).result("ID do produto inválido.");
+            return;
+        }
+
+        // Buscar o produto no banco de dados
+        Produto produto = manager.getProdutoAtualizar(id);
+
+        if (produto != null) {
+            Map<String, Object> dados = new HashMap<>();
+            dados.put("produto", produto);
+            ctx.render("produtoAtualizar.html", dados);
+        } else {
+            ctx.status(404).result("Produto não encontrado");
+        }
     };
 
-        //listar produto
+    public Handler postProdutoAtualizar = (Context ctx) -> {
+        int id = 0;
+        try {
+            id = Integer.parseInt(ctx.formParam("id"));
+        } catch (NumberFormatException e) {
+            ctx.status(400).result("ID do produto inválido.");
+            return;
+        }
+
+        String nome = ctx.formParam("nome");
+        String descricao = ctx.formParam("descricao");
+        double preco = 0.0;
+        int quantidadeEstoque = 0;
+
+        try {
+            preco = Double.parseDouble(ctx.formParam("preco"));
+            quantidadeEstoque = Integer.parseInt(ctx.formParam("quantidadeEstoque"));
+        } catch (NumberFormatException e) {
+            System.out.println("Erro ao converter valores numéricos (preço ou quantidade)");
+            ctx.status(400).result("Erro ao converter valores numéricos.");
+            return;
+        }
+
+        Produto produto = new Produto(id, nome, descricao, preco, quantidadeEstoque);
+
+        // Atualizar o produto no banco de dados
+        boolean sucesso = manager.updateProduto(produto);
+
+        if (sucesso) {
+            // Se a atualização for bem-sucedida, exibir mensagem de sucesso
+            Map<String, Object> dados = new HashMap<>();
+            dados.put("mensagem", "Produto atualizado com sucesso!");
+            dados.put("nome", produto.getNome());
+            dados.put("descricao", produto.getDescricao());
+            dados.put("preco", produto.getPreco());
+            dados.put("quantidadeEstoque", produto.getQuantidadeEstoque());
+            ctx.render("respostaAtualizar.html", dados);
+        } else {
+            // Caso contrário, exibir erro
+            ctx.status(500).result("Erro ao atualizar produto");
+        }
+    };
+
+    //listar produto
     public Handler listarProduto = (Context ctx) -> {
         List<Produto> lista = manager.getProduto();
 
