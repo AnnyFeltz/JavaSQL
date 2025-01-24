@@ -63,6 +63,7 @@ public class IndexController {
         ctx.render("produtoAtualizar.html");
     };
 
+        //listar produto
     public Handler listarProduto = (Context ctx) -> {
         List<Produto> list = manager.getProduto();
 
