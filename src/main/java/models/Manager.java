@@ -147,7 +147,7 @@ public class Manager {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
-            String sql = "SELECT * FROM ESTOQUE_VENDA";
+            String sql = "SELECT * FROM ESTOQUE_VENDA ";
             PreparedStatement pstm = con.prepareStatement(sql);
 
             ResultSet rs = pstm.executeQuery();
