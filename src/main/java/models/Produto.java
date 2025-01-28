@@ -20,7 +20,6 @@ public class Produto {
         this.descricao = descricao;
         this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;
-        this.ativo = ativo;
     }
 
     public Produto(String nome, String descricao, double preco, int quantidadeEstoque, boolean ativo) {
