@@ -153,12 +153,13 @@ public class Manager {
             ResultSet rs = pstm.executeQuery();
 
             while (rs.next()) {
+                int idVenda = rs.getInt("id_venda");
                 Date dataVenda = rs.getDate("data_venda");
                 String formaPagamento = rs.getString("forma_pagamento");
                 double valorTotal = rs.getDouble("valor_total");
                 int idCliente = rs.getInt("id_cliente");
 
-                Venda v = new Venda(dataVenda, formaPagamento, valorTotal, idCliente);
+                Venda v = new Venda(idVenda, dataVenda, formaPagamento, valorTotal, idCliente);
                 this.venda.add(v);
             }
 

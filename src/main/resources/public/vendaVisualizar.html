@@ -11,6 +11,23 @@
 <body>
     <!--
     basicamente um listar vendas, não sei como quero q seja, faz oq quiser-->
+    <div class="listagem-container">
+        <h1>Listar Produtos</h1>
+
+
+        <div class="card-container">
+            <#list lista as venda>
+                <div class="cardListar">
+                    <p><strong>Descrição:</strong> ${venda.dataVenda}</p>
+                    <p><strong>Preço:</strong> ${venda.formaPagamento}</p>
+                    <p><strong>Quantidade no Estoque:</strong> ${venda.valorTotal}</p>
+                    <p><strong>Quantidade no Estoque:</strong> ${venda.idCliente}</p>
+
+                </div>
+            </#list>
+
+        </div>
+    </div>
 
 </html>   
 
