@@ -6,14 +6,8 @@ public class Produto {
     private String descricao;
     private double preco;
     private int quantidadeEstoque;
-    private boolean ativo;
 
-    // Construtor padrão
-    public Produto() {
-        this.ativo = true;
-    }
-
-    // Construtor com parâmetros
+    // Construtor
     public Produto(int id, String nome, String descricao, double preco, int quantidadeEstoque) {
         this.id = id;
         this.nome = nome;
@@ -22,24 +16,16 @@ public class Produto {
         this.quantidadeEstoque = quantidadeEstoque;
     }
 
-    public Produto(String nome, String descricao, double preco, int quantidadeEstoque, boolean ativo) {
+    public Produto(String nome, String descricao, double preco, int quantidadeEstoque) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;
-        this.ativo = ativo;
     }
 
-    public Produto(String nome, String descricao, double preco, boolean ativo) {
+    public Produto(int id, String nome, int quantidadeEstoque) {
+        this.id = id;
         this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.ativo = ativo;
-    }
-
-    public Produto(String nome, double preco, int quantidadeEstoque) {
-        this.nome = nome;
-        this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;
     }
 
@@ -75,14 +61,6 @@ public class Produto {
 
     public void setQuantidadeEstoque(int quantidadeEstoque) {
         this.quantidadeEstoque = quantidadeEstoque;
-    }
-    
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
     }
 
     public int getId() {

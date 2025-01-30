@@ -14,8 +14,10 @@ public class App {
         app.get("/produto-adicionar", indexController.getProduto);
         app.post("/produto-adicionar", indexController.postProduto);
 
-        app.get("/produto-atualizar", indexController.getProdutoAtualizar);
+        app.get("/produto-atualizar/{id}", indexController.getProdutoAtualizar);
         app.post("/produto-atualizar", indexController.postProdutoAtualizar);
+
+        app.get("/produto-buscar", indexController.buscarProduto);
         
         app.get("/produto-listar", indexController.listarProduto);
         app.get("/produto-vendido", indexController.consultarProduto);

@@ -5,17 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/estilo.css">
-    <title>Visualizar Estoque</title>
+    <title>Listar Produtos</title>
 </head>
 
 <body>
-    <!--
-    gostaria que fosse tipo o listar produto 
-    mas aqui só vai ter o nome do produto e o estoque dele, assim
-    [    id - Nome   ]
-    [estoque: numero ]
-    -->
-    <a href="/">Voltar a Página Inicial</a>
+    
+    <div class="listagem-container">
+        <a href="/">Voltar</a>
+
+        <h1>Estoque</h1>
+
+        <div class="card-container">
+            <#list lista as produto>
+                <div class="cardListar">
+                    <h2>ID: ${produto.id} - ${produto.nome}</h2>
+                    <p><strong>Quantidade disponivel:</strong> <h1>${produto.quantidadeEstoque}</h1></p>
+
+                </div>
+            </#list>
+
+        </div>
+
+        <a href="/">Voltar</a>
+    </div>
+
 </body>
 
-</html>   
+</html>
+
+<!--
+    fazer o listar dos produtos, 
+    queria q cada produto estivesse no seu proprio quadradinho 
+    tipo [produto1...] [produto2...],
+    3 ou 4 colunas de produtos, se precisar faz a animação q quiser,
+    aé e não coloca o estoque
+    -->

@@ -25,14 +25,13 @@ public class Manager {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
-            String sql = "INSERT INTO ESTOQUE_PRODUTO(nome, descricao, preco, quantidade_estoque, ativo) VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO ESTOQUE_PRODUTO(nome, descricao, preco, quantidade_estoque) VALUES (?,?,?,?)";
             PreparedStatement pstm = con.prepareStatement(sql);
 
             pstm.setString(1, p.getNome());
             pstm.setString(2, p.getDescricao());
             pstm.setDouble(3, p.getPreco());
             pstm.setInt(4, p.getQuantidadeEstoque());
-            pstm.setBoolean(5, p.isAtivo());
 
             //frufru
             int res = pstm.executeUpdate();
@@ -52,26 +51,48 @@ public class Manager {
     //atualizar
     public boolean updateProduto(Produto p) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
-
+    
             System.out.println("Conectado!");
-            String sql = "UPDATE ESTOQUE_PRODUTO SET nome = ?, descricao = ?, preco = ?, quantidade_estoque = ? WHERE id = ?";
-            PreparedStatement pstm = con.prepareStatement(sql);
-
-            pstm.setString(1, p.getNome());
-            pstm.setString(2, p.getDescricao());
-            pstm.setDouble(3, p.getPreco());
-            pstm.setInt(4, p.getQuantidadeEstoque());
-            pstm.setInt(6, p.getId());
-
-            int res = pstm.executeUpdate();
-
-            return res == 1;  // Retorna true se uma linha foi atualizada, false caso contrário
-
+            // Atualizar o preço do produto
+            String sqlProduto = "UPDATE ESTOQUE_PRODUTO SET nome = ?, descricao = ?, preco = ?, quantidade_estoque = ? WHERE id_produto = ?";
+            PreparedStatement pstmProduto = con.prepareStatement(sqlProduto);
+    
+            pstmProduto.setString(1, p.getNome());
+            pstmProduto.setString(2, p.getDescricao());
+            pstmProduto.setDouble(3, p.getPreco());
+            pstmProduto.setInt(4, p.getQuantidadeEstoque());
+            pstmProduto.setInt(5, p.getId());
+    
+            int resProduto = pstmProduto.executeUpdate();
+    
+            if (resProduto == 1) {
+                // Atualizar o subtotal de todos os itens de venda relacionados a esse produto
+                String sqlItemVenda = "UPDATE ESTOQUE_ITEM_VENDA SET PRECO_UNITARIO = ?, SUBTOTAL = PRECO_UNITARIO * QUANTIDADE WHERE ID_PRODUTO = ?";
+                PreparedStatement pstmItemVenda = con.prepareStatement(sqlItemVenda);
+    
+                pstmItemVenda.setDouble(1, p.getPreco());
+                pstmItemVenda.setInt(2, p.getId());
+    
+                int resItemVenda = pstmItemVenda.executeUpdate();
+    
+                // Atualizar o total da venda
+                String sqlTotalVenda = "UPDATE ESTOQUE_VENDA v SET v.VALOR_TOTAL = (SELECT SUM(ei.SUBTOTAL) FROM ESTOQUE_ITEM_VENDA ei WHERE ei.ID_VENDA = v.ID_VENDA) WHERE v.ID_VENDA IN (SELECT DISTINCT ID_VENDA FROM ESTOQUE_ITEM_VENDA WHERE ID_PRODUTO = ?)";
+                PreparedStatement pstmTotalVenda = con.prepareStatement(sqlTotalVenda);
+    
+                pstmTotalVenda.setInt(1, p.getId());
+                int resTotalVenda = pstmTotalVenda.executeUpdate();
+    
+                return resProduto == 1 && resItemVenda > 0 && resTotalVenda > 0;  // Retorna true se tudo foi atualizado corretamente
+            }
+    
+            return false; // Retorna false se não atualizou o produto
+    
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false;  // Retorna false em caso de erro
+            return false;
         }
     }
+    
 
     //procurar produto por id
     public Produto getProdutoAtualizar(int id) {
@@ -81,7 +102,7 @@ public class Manager {
 
             System.out.println("Conectado!");
             // SQL corrigido para fazer SELECT e não UPDATE
-            String sql = "SELECT * FROM ESTOQUE_PRODUTO WHERE id = ?";
+            String sql = "SELECT * FROM ESTOQUE_PRODUTO WHERE id_produto = ?";
             PreparedStatement pstm = con.prepareStatement(sql);
 
             // Definir o parâmetro de ID no SQL
@@ -94,7 +115,7 @@ public class Manager {
             if (rs.next()) {
                 // Criar o objeto Produto a partir do resultado da consulta
                 produto = new Produto(
-                        rs.getInt("id"),
+                        rs.getInt("id_produto"),
                         rs.getString("nome"),
                         rs.getString("descricao"),
                         rs.getDouble("preco"),
@@ -115,19 +136,19 @@ public class Manager {
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
-            String sql = "SELECT * FROM ESTOQUE_PRODUTO WHERE ativo = true";
+            String sql = "SELECT * FROM ESTOQUE_PRODUTO";
             PreparedStatement pstm = con.prepareStatement(sql);
 
             ResultSet rs = pstm.executeQuery();
 
             while (rs.next()) {
+                int id = rs.getInt("id_produto");
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
                 double preco = rs.getDouble("preco");
                 int quantidadeEstoque = rs.getInt("quantidade_estoque");
-                boolean ativo = rs.getBoolean("ativo");
 
-                Produto p = new Produto(nome, descricao, preco, quantidadeEstoque, ativo);
+                Produto p = new Produto(id, nome, descricao, preco, quantidadeEstoque);
                 this.produto.add(p);
             }
 
@@ -138,7 +159,6 @@ public class Manager {
         return this.produto;
     }
 
-    //desativar produto
     //#endregion
     //#region Venda
     //pegar/listar
@@ -153,13 +173,13 @@ public class Manager {
             ResultSet rs = pstm.executeQuery();
 
             while (rs.next()) {
-                int idVenda = rs.getInt("id_venda");
+                int id = rs.getInt("id_venda");
                 Date dataVenda = rs.getDate("data_venda");
                 String formaPagamento = rs.getString("forma_pagamento");
                 double valorTotal = rs.getDouble("valor_total");
                 int idCliente = rs.getInt("id_cliente");
 
-                Venda v = new Venda(idVenda, dataVenda, formaPagamento, valorTotal, idCliente);
+                Venda v = new Venda(id, dataVenda, formaPagamento, valorTotal, idCliente);
                 this.venda.add(v);
             }
 

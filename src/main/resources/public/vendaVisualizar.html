@@ -12,24 +12,23 @@
     <!--
     basicamente um listar vendas, não sei como quero q seja, faz oq quiser-->
     <div class="listagem-container">
+        <a href="/">Voltar</a>
+        
         <h1>Listar Produtos</h1>
-
 
         <div class="card-container">
             <#list lista as venda>
                 <div class="cardListar">
-                
-                    <p><strong>Descrição:</strong> ${venda.dataVenda}</p>
-                    <p><strong>Preço:</strong> ${venda.formaPagamento}</p>
-                    <p><strong>Quantidade no Estoque:</strong> ${venda.valorTotal}</p>
-                    <p><strong>Quantidade no Estoque:</strong> ${venda.idCliente}</p>
-
+                    <p><strong>ID Venda:</strong> ${venda.id}</p>
+                    <p><strong>Data:</strong> ${venda.dataVenda}</p>
+                    <p><strong>Forma de Pagamento:</strong> ${venda.formaPagamento}</p>
+                    <p><strong>Valor Total:</strong> ${venda.valorTotal}</p>
+                    <p><strong>ID Cliente:</strong> ${venda.idCliente}</p>
                 </div>
             </#list>
-
         </div>
+
+        <a href="/">Voltar</a>
     </div>
 
-</html>   
-
-
+</html>

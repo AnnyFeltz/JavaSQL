@@ -33,7 +33,6 @@ public class IndexController {
         String descricao = ctx.formParam("descricao");
         double preco = 0.0;
         int quantidadeEstoque = 0;
-        boolean ativo = true;
 
         try {
             preco = Double.parseDouble(ctx.formParam("preco"));
@@ -44,9 +43,8 @@ public class IndexController {
             return;
         }
 
-        Produto produto = new Produto(nome, descricao, preco, quantidadeEstoque, ativo);
+        Produto produto = new Produto(nome, descricao, preco, quantidadeEstoque);
 
-        // Adicionar o produto no banco
         manager.addProduto(produto);
 
         Map<String, Object> dados = new HashMap<>();
@@ -55,31 +53,29 @@ public class IndexController {
         dados.put("descricao", produto.getDescricao());
         dados.put("preco", produto.getPreco());
         dados.put("quantidadeEstoque", produto.getQuantidadeEstoque());
-        dados.put("ativo", produto.isAtivo());
         ctx.render("resposta.html", dados);
     };
 
     public Handler getProdutoAtualizar = (Context ctx) -> {
-        // Recuperar o ID do produto da URL
         int id = 0;
         try {
-            id = Integer.parseInt(ctx.pathParam("id"));
+            // Mudança aqui: usamos pathParam ao invés de queryParam
+            id = Integer.parseInt(ctx.pathParam("id"));  // Obtém o ID da URL (parte do caminho)
         } catch (NumberFormatException e) {
             ctx.status(400).result("ID do produto inválido.");
             return;
         }
-
-        // Buscar o produto no banco de dados
         Produto produto = manager.getProdutoAtualizar(id);
-
         if (produto != null) {
             Map<String, Object> dados = new HashMap<>();
             dados.put("produto", produto);
+            // Redireciona para a página de atualização do produto
             ctx.render("produtoAtualizar.html", dados);
         } else {
             ctx.status(404).result("Produto não encontrado");
         }
     };
+     
 
     public Handler postProdutoAtualizar = (Context ctx) -> {
         int id = 0;
@@ -89,12 +85,12 @@ public class IndexController {
             ctx.status(400).result("ID do produto inválido.");
             return;
         }
-
+    
         String nome = ctx.formParam("nome");
         String descricao = ctx.formParam("descricao");
         double preco = 0.0;
         int quantidadeEstoque = 0;
-
+    
         try {
             preco = Double.parseDouble(ctx.formParam("preco"));
             quantidadeEstoque = Integer.parseInt(ctx.formParam("quantidadeEstoque"));
@@ -103,14 +99,12 @@ public class IndexController {
             ctx.status(400).result("Erro ao converter valores numéricos.");
             return;
         }
-
-        Produto produto = new Produto(id, nome, descricao, preco, quantidadeEstoque);
-
-        // Atualizar o produto no banco de dados
+    
+        Produto produto = new Produto(nome, descricao, preco, quantidadeEstoque);
+        produto.setId(id); // Definindo o ID do produto para atualização
         boolean sucesso = manager.updateProduto(produto);
-
+    
         if (sucesso) {
-            // Se a atualização for bem-sucedida, exibir mensagem de sucesso
             Map<String, Object> dados = new HashMap<>();
             dados.put("mensagem", "Produto atualizado com sucesso!");
             dados.put("nome", produto.getNome());
@@ -119,10 +113,10 @@ public class IndexController {
             dados.put("quantidadeEstoque", produto.getQuantidadeEstoque());
             ctx.render("respostaAtualizar.html", dados);
         } else {
-            // Caso contrário, exibir erro
             ctx.status(500).result("Erro ao atualizar produto");
         }
     };
+    
 
     //listar produto
     public Handler listarProduto = (Context ctx) -> {
@@ -148,11 +142,20 @@ public class IndexController {
     };
 
     public Handler visualizarEstoque = (Context ctx) -> {
-        ctx.render("estoqueVisualizar.html");
+        List<Produto> lista = manager.getProduto();
+
+        Map<String, Object> dados = new HashMap<>();
+
+        dados.put("lista", lista);
+        ctx.render("estoqueVisualizar.html", dados);
     };
 
     public Handler consultarProduto = (Context ctx) -> {
         ctx.render("produtoconsultar.html");
     };
 
+    public Handler buscarProduto = (Context ctx) -> {
+        ctx.render("produtoBuscar.html");  // Renderiza a página de busca do produto
+    };
+    
 }

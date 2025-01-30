@@ -1,16 +1,10 @@
-create table if not exists ESTOQUE_CLIENTE(
-    id_cliente int auto_increment,
-    primary key(id_cliente)
-);
-
 create table if not exists ESTOQUE_VENDA(
     id_venda int auto_increment,
     data_venda date not null,
     forma_pagamento varchar(45) not null,
     valor_total double not null,
     id_cliente int not null,
-    primary key(id_venda),
-    foreign key(id_cliente) references ESTOQUE_CLIENTE(id_cliente)
+    primary key(id_venda)
 );
 
 create table if not exists ESTOQUE_PRODUTO(

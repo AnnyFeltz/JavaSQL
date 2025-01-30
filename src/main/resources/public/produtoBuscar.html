@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Produto</title>
+</head>
+<body>
+    <h1>Buscar Produto</h1>
+    <form id="buscarProdutoForm" action="/produto-atualizar/" method="get">
+        <label for="id">ID do Produto:</label>
+        <input type="number" id="id" name="id" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <script>
+        // Modificar a URL de ação antes de submeter o formulário
+        document.getElementById("buscarProdutoForm").onsubmit = function (event) {
+            event.preventDefault(); // Previne o comportamento padrão de envio do formulário
+            var id = document.getElementById("id").value;
+            window.location.href = '/produto-atualizar/' + id; // Redireciona para a URL desejada
+        };
+    </script>
+
+    <a href="/">Voltar</a>
+</body>
+</html>

@@ -9,25 +9,26 @@
 </head>
 
 <body>
+    
     <div class="listagem-container">
-        <h1>Listar Produtos</h1>
+        <a href="/">Voltar</a>
 
+        <h1>Listar Produtos</h1>
 
         <div class="card-container">
             <#list lista as produto>
                 <div class="cardListar">
-                    <h2>${produto.nome}</h2>
+                    <h2>ID: ${produto.id} - ${produto.nome}</h2>
                     <p><strong>Descrição:</strong> ${produto.descricao}</p>
                     <p><strong>Preço:</strong> ${produto.preco}</p>
-                    <p><strong>Quantidade no Estoque:</strong> ${produto.quantidadeEstoque}</p>
-
+                    <a href="/estoque-visualizar">Estoque</a>
                 </div>
             </#list>
 
         </div>
-    </div>
 
-    <a href="/">Voltar a Página Inicial</a>
+        <a href="/">Voltar</a>
+    </div>
 
 </body>
 
