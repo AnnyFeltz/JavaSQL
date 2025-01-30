@@ -4,24 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscar Produto</title>
+    <style>
+        /* Estilos Gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            display: block;
+            padding: 30px;
+            justify-items: center;
+        }
+
+        header {
+            display: block;
+            justify-items: center;
+            text-align: center;
+            background-color: #b6c7ff;
+            padding: 30px;
+            color: #384566;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            width: 100%;
+            box-shadow: 11px 11px 6px rgba(16, 32, 0, 0.1);
+            width: 50%;
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: #384566;
+            margin-bottom: 20px;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Formulário */
+        .form-container {
+            background-color: #b6c7ff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            width: 100%;
+            text-align: center;
+        }
+
+        form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+            display: block;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #46576f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #384566;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            color: #384566;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        a:hover {
+            color: #2c3b55;
+        }
+    </style>
 </head>
 <body>
-    <h1>Buscar Produto</h1>
-    <form id="buscarProdutoForm" action="/produto-atualizar/" method="get">
-        <label for="id">ID do Produto:</label>
-        <input type="number" id="id" name="id" required>
-        <button type="submit">Buscar</button>
-    </form>
-
+    <header>
+        <h1>Buscar Produto</h1>
+    </header>
+    <main>
+        <div class="form-container">
+            <form id="buscarProdutoForm" action="/produto-atualizar/" method="get">
+                <label for="id">ID do Produto:</label>
+                <input type="number" id="id" name="id" required placeholder="Digite o ID do produto">
+                <button type="submit">Buscar</button>
+            </form>
+            <a href="/">Voltar</a>
+        </div>
+    </main>
     <script>
-        // Modificar a URL de ação antes de submeter o formulário
         document.getElementById("buscarProdutoForm").onsubmit = function (event) {
-            event.preventDefault(); // Previne o comportamento padrão de envio do formulário
+            event.preventDefault();
             var id = document.getElementById("id").value;
-            window.location.href = '/produto-atualizar/' + id; // Redireciona para a URL desejada
+            window.location.href = '/produto-atualizar/' + id;
         };
     </script>
-
-    <a href="/">Voltar</a>
 </body>
 </html>
