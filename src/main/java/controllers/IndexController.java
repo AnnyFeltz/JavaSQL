@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,11 +152,28 @@ public class IndexController {
     };
 
     public Handler consultarProduto = (Context ctx) -> {
-        ctx.render("produtoconsultar.html");
+        List<Venda> vendas = manager.getVenda();
+            
+        Map<String, Object> dados = new HashMap<>();
+        
+        List<Map<String, Object>> produtosPorVenda = new ArrayList<>();
+        
+        for (Venda venda : vendas) {
+            List<Map<String, Object>> produtosDaVenda = manager.getProdutoVendido(venda.getId());
+            
+            Map<String, Object> vendaProdutos = new HashMap<>();
+            vendaProdutos.put("idVenda", venda.getId());
+            vendaProdutos.put("produtos", produtosDaVenda);
+    
+            produtosPorVenda.add(vendaProdutos);
+        }
+    
+        dados.put("produtosPorVenda", produtosPorVenda);
+        ctx.render("produtoConsultar.html", dados);
     };
 
     public Handler buscarProduto = (Context ctx) -> {
-        ctx.render("produtoBuscar.html");  // Renderiza a página de busca do produto
+        ctx.render("produtoBuscar.html");
     };
     
 }

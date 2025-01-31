@@ -9,7 +9,30 @@
 </head>
 
 <body>
+
+    <div class="listagem-container">
+        <a href="/">Voltar</a>
+        
+        <h1>Listar Vendas e Produtos</h1>
+
+        <div class="card-container">
+            <!-- Iterar sobre as vendas -->
+            <#list produtosPorVenda as vendaProdutos>
+                <div class="cardListar">
+                    <p><strong>ID Venda:</strong> ${vendaProdutos.idVenda}</p>
+                    
+                    <p><strong>Produtos:</strong></p>
+                    <ul>
+                        <!-- Iterar sobre os produtos dentro de cada venda -->
+                        <#list vendaProdutos.produtos as produto>
+                            <li>ID Produto: ${produto.idProduto} - Nome: ${produto.nome} - Quantidade: ${produto.quantidade} - Preço(Uni): ${produto.preco} - Subtotal: ${produto.subtotal}</li>
+                        </#list>
+                    </ul>
+                </div>
+            </#list>
+        </div>
+        
     <a href="/">Voltar a Página Inicial</a>
 </body>
 
-</html>   
+</html>

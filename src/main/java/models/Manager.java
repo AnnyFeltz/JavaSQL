@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Manager {
 
@@ -196,28 +198,40 @@ public class Manager {
     //#region Item_Venda
     //#endregion
 
-    public List<ItemVenda> getProdutoVendido() {
-        this.produto.clear();
-
+    public List<Map<String, Object>> getProdutoVendido(int idVenda) {
+        List<Map<String, Object>> produtosDaVenda = new ArrayList<>();
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
-            String sql = "SELECT * FROM ESTOQUE_ITEM_VENDA";
+            System.out.println("Conectado!");
+
+            // SQL para pegar os produtos associados à venda
+            String sql = "SELECT p.id_produto, p.nome, iv.quantidade, p.preco, iv.subtotal "
+                    + "FROM ESTOQUE_ITEM_VENDA iv "
+                    + "JOIN ESTOQUE_PRODUTO p ON iv.id_produto = p.id_produto "
+                    + "WHERE iv.id_venda = ?";
             PreparedStatement pstm = con.prepareStatement(sql);
+
+            // Definir o parâmetro de ID da venda
+            pstm.setInt(1, idVenda);
 
             ResultSet rs = pstm.executeQuery();
 
+            // Adicionar cada produto na lista com os detalhes
             while (rs.next()) {
-                int id = rs.getInt("id_item_venda");
-                int quantidade = rs.getInt("quantidade");
-                double precoUnitario = rs.getInt("precoUnitario");
-                int idVenda = rs.getInt("id_venda");
-                Produto produto;
+                Map<String, Object> produtoDetalhado = new HashMap<>();
+                produtoDetalhado.put("idProduto", rs.getInt("id_produto"));
+                produtoDetalhado.put("nome", rs.getString("nome"));
+                produtoDetalhado.put("quantidade", rs.getInt("quantidade"));
+                produtoDetalhado.put("preco", rs.getDouble("preco"));
+                produtoDetalhado.put("subtotal", rs.getDouble("subtotal"));
+
+                produtosDaVenda.add(produtoDetalhado);
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erro ao buscar produtos da venda: " + e.getMessage());
         }
 
-        return this.itemVenda;
+        return produtosDaVenda;  // Retorna a lista de produtos ou uma lista vazia
     }
 }
