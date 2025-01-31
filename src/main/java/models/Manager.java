@@ -13,10 +13,12 @@ public class Manager {
 
     private List<Produto> produto;
     private List<Venda> venda;
+    private List<ItemVenda> itemVenda;
 
     public Manager() {
         produto = new ArrayList<>();
         venda = new ArrayList<>();
+        itemVenda = new ArrayList<>();
     }
 
     //#region Produto
@@ -193,4 +195,29 @@ public class Manager {
 
     //#region Item_Venda
     //#endregion
+
+    public List<ItemVenda> getProdutoVendido() {
+        this.produto.clear();
+
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+
+            String sql = "SELECT * FROM ESTOQUE_ITEM_VENDA";
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id_item_venda");
+                int quantidade = rs.getInt("quantidade");
+                double precoUnitario = rs.getInt("precoUnitario");
+                int idVenda = rs.getInt("id_venda");
+                Produto produto;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return this.itemVenda;
+    }
 }
