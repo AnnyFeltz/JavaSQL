@@ -9,30 +9,44 @@
 </head>
 
 <body>
-
-    <div class="listagem-container">
+    <div class="consultar-container">
         <a href="/">Voltar</a>
         
-        <h1>Listar Vendas e Produtos</h1>
+        <h1>Consultar Vendas e Produtos</h1>
 
-        <div class="card-container">
+        <div class="card-container-consultar">
             <!-- Iterar sobre as vendas -->
             <#list produtosPorVenda as vendaProdutos>
-                <div class="cardListar">
+                <div class="card-consultar">
                     <p><strong>ID Venda:</strong> ${vendaProdutos.idVenda}</p>
                     
-                    <p><strong>Produtos:</strong></p>
                     <ul>
+                        <!-- Cabeçalho (nomes das colunas) -->
+                        <li>
+                            <span><strong>ID Produto</strong></span>
+                            <span><strong>Nome</strong></span>
+                            <span><strong>Quantidade</strong></span>
+                            <span><strong>Preço(Uni)</strong></span>
+                            <span><strong>Subtotal</strong></span>
+                        </li>
                         <!-- Iterar sobre os produtos dentro de cada venda -->
                         <#list vendaProdutos.produtos as produto>
-                            <li>ID Produto: ${produto.idProduto} - Nome: ${produto.nome} - Quantidade: ${produto.quantidade} - Preço(Uni): ${produto.preco} - Subtotal: ${produto.subtotal}</li>
+                            <li>
+                                <span>${produto.idProduto}</span>
+                                <span>${produto.nome}</span>
+                                <span>${produto.quantidade}</span>
+                                <span>${produto.preco}</span>
+                                <span>${produto.subtotal}</span>
+                            </li>
                         </#list>
                     </ul>
                 </div>
             </#list>
         </div>
         
-    <a href="/">Voltar a Página Inicial</a>
+        <a href="/">Voltar a Página Inicial</a>
+    </div>
+
 </body>
 
 </html>
