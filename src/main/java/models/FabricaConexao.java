@@ -1,4 +1,4 @@
-package br.edu.ifpr.pgua.eic.tads.models;
+package models;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

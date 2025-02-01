@@ -230,51 +230,85 @@ public class Manager {
 
     //deletar venda
     public boolean deleteVenda(int id) {
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+            // Remover primeiro os itens de venda associados à venda
+            String sqlItens = "DELETE FROM ESTOQUE_ITEM_VENDA WHERE id_venda = ?";
+            PreparedStatement pstmItens = con.prepareStatement(sqlItens);
+            pstmItens.setInt(1, id);
+            pstmItens.executeUpdate();
 
-        try (Connection con = FabricaConexao.getInstance().getConnection()) {
-            System.out.println("Conectado!");
+            // Depois, remover a venda
+            String sqlVenda = "DELETE FROM ESTOQUE_VENDA WHERE id_venda = ?";
+            PreparedStatement pstmVenda = con.prepareStatement(sqlVenda);
+            pstmVenda.setInt(1, id);
+            int rowsAffected = pstmVenda.executeUpdate();
 
-            String sql = "DELETE FROM ESTOQUE_VENDA WHERE id_venda = ?";
-            PreparedStatement pstm = con.prepareStatement(sql);
-
-            pstm.setInt(1, id);
-
-            int res = pstm.executeUpdate();
-
-            if (res == 1) {
-                System.out.println("Venda removida com sucesso!");
-                return true; // Sucesso
-            } else {
-                System.out.println("Nenhum registro encontrado para o id informado.");
-            }
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            System.out.println("Erro ao remover venda: " + e.getMessage());
+            System.out.println("Erro ao deletar venda: " + e.getMessage());
+            return false;
         }
-        return false; // Falha
     }
 
     //deletar produto
-    public boolean delete(String cpf) {
-
-        try (Connection con = FabricaConexao.getInstance().getConnection()) {
-            System.out.println("Conectado!");
-
-            String sql = "DELETE FROM OO_ALUNO WHERE cpf = ?";
-            PreparedStatement pstm = con.prepareStatement(sql);
-
-            pstm.setString(1, cpf);
-
-            int res = pstm.executeUpdate();
-
-            if (res == 1) {
-                System.out.println("Aluno removido com sucesso!");
-                return true; // Sucesso
-            } else {
-                System.out.println("Nenhum registro encontrado para o CPF informado.");
+    public boolean deleteProduto(int id) {
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+    
+            // Etapa 1: Obter os IDs das vendas que têm o produto
+            String sqlVendasComProduto = "SELECT DISTINCT ei.ID_VENDA FROM ESTOQUE_ITEM_VENDA ei WHERE ei.ID_PRODUTO = ?";
+            PreparedStatement pstmVendasComProduto = con.prepareStatement(sqlVendasComProduto);
+            pstmVendasComProduto.setInt(1, id);
+            ResultSet rsVendas = pstmVendasComProduto.executeQuery();
+    
+            // Guardar os IDs das vendas em uma lista
+            List<Integer> vendasIds = new ArrayList<>();
+            while (rsVendas.next()) {
+                vendasIds.add(rsVendas.getInt("ID_VENDA"));
             }
+    
+            // Etapa 2: Excluir o produto da tabela ESTOQUE_ITEM_VENDA
+            String sqlDeleteItemVenda = "DELETE FROM ESTOQUE_ITEM_VENDA WHERE ID_PRODUTO = ?";
+            PreparedStatement pstmDeleteItemVenda = con.prepareStatement(sqlDeleteItemVenda);
+            pstmDeleteItemVenda.setInt(1, id);
+            int rowsAffectedItens = pstmDeleteItemVenda.executeUpdate(); // Exclui o produto dos itens de venda
+    
+            // Etapa 3: Excluir o produto da tabela ESTOQUE_PRODUTO
+            String sqlDeleteProduto = "DELETE FROM ESTOQUE_PRODUTO WHERE ID_PRODUTO = ?";
+            PreparedStatement pstmDeleteProduto = con.prepareStatement(sqlDeleteProduto);
+            pstmDeleteProduto.setInt(1, id);
+            int rowsAffectedProduto = pstmDeleteProduto.executeUpdate(); // Exclui o produto
+    
+            // Etapa 4: Atualizar o valor total das vendas
+            if (!vendasIds.isEmpty()) {
+                StringBuilder vendasInClause = new StringBuilder();
+                for (int i = 0; i < vendasIds.size(); i++) {
+                    vendasInClause.append("?");
+                    if (i < vendasIds.size() - 1) {
+                        vendasInClause.append(", ");
+                    }
+                }
+    
+                String sqlAtualizaVendas = "UPDATE ESTOQUE_VENDA v SET v.VALOR_TOTAL = (SELECT SUM(ei.SUBTOTAL) FROM ESTOQUE_ITEM_VENDA ei WHERE ei.ID_VENDA = v.ID_VENDA) WHERE v.ID_VENDA IN (" + vendasInClause + ")";
+                PreparedStatement pstmAtualizaVendas = con.prepareStatement(sqlAtualizaVendas);
+    
+                // Define os parâmetros para os IDs das vendas
+                for (int i = 0; i < vendasIds.size(); i++) {
+                    pstmAtualizaVendas.setInt(i + 1, vendasIds.get(i));
+                }
+    
+                int rowsAffectedVendas = pstmAtualizaVendas.executeUpdate(); // Atualiza as vendas
+    
+                // Verificar se todas as etapas foram bem-sucedidas
+                return rowsAffectedItens > 0 && rowsAffectedProduto > 0 && rowsAffectedVendas > 0;
+            } else {
+                return false;
+            }
+    
         } catch (SQLException e) {
-            System.out.println("Erro ao remover aluno: " + e.getMessage());
+            System.out.println("Erro ao atualizar as tabelas referenciadas: " + e.getMessage());
+            return false;
         }
-        return false; // Falha
     }
+    
+
 }

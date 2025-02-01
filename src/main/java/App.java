@@ -27,7 +27,10 @@ public class App {
         app.get("/estoque-visualizar", indexController.visualizarEstoque);
         app.get("/venda-visualizar", indexController.visualizarVenda);
 
-        app.get("/produto-deletar", indexController.deletarProduto);
-        app.get("/venda-deletar", indexController.deletarVenda);
+        app.get("/produto-deletar", indexController.getDeletarProduto);
+        app.post("/produto-deletar", indexController.postDeletarProduto);
+        
+        app.get("/venda-deletar", indexController.getDeletarVenda);
+        app.post("/venda-deletar", indexController.postDeletarVenda);
     }
 }

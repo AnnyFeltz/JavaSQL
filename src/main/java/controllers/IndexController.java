@@ -60,8 +60,7 @@ public class IndexController {
     public Handler getProdutoAtualizar = (Context ctx) -> {
         int id = 0;
         try {
-            // Mudança aqui: usamos pathParam ao invés de queryParam
-            id = Integer.parseInt(ctx.pathParam("id"));  // Obtém o ID da URL (parte do caminho)
+            id = Integer.parseInt(ctx.pathParam("id"));
         } catch (NumberFormatException e) {
             ctx.status(400).result("ID do produto inválido.");
             return;
@@ -70,13 +69,11 @@ public class IndexController {
         if (produto != null) {
             Map<String, Object> dados = new HashMap<>();
             dados.put("produto", produto);
-            // Redireciona para a página de atualização do produto
             ctx.render("produtoAtualizar.html", dados);
         } else {
             ctx.status(404).result("Produto não encontrado");
         }
     };
-     
 
     public Handler postProdutoAtualizar = (Context ctx) -> {
         int id = 0;
@@ -86,12 +83,12 @@ public class IndexController {
             ctx.status(400).result("ID do produto inválido.");
             return;
         }
-    
+
         String nome = ctx.formParam("nome");
         String descricao = ctx.formParam("descricao");
         double preco = 0.0;
         int quantidadeEstoque = 0;
-    
+
         try {
             preco = Double.parseDouble(ctx.formParam("preco"));
             quantidadeEstoque = Integer.parseInt(ctx.formParam("quantidadeEstoque"));
@@ -100,11 +97,11 @@ public class IndexController {
             ctx.status(400).result("Erro ao converter valores numéricos.");
             return;
         }
-    
+
         Produto produto = new Produto(nome, descricao, preco, quantidadeEstoque);
-        produto.setId(id); // Definindo o ID do produto para atualização
+        produto.setId(id);
         boolean sucesso = manager.updateProduto(produto);
-    
+
         if (sucesso) {
             Map<String, Object> dados = new HashMap<>();
             dados.put("mensagem", "Produto atualizado com sucesso!");
@@ -117,7 +114,6 @@ public class IndexController {
             ctx.status(500).result("Erro ao atualizar produto");
         }
     };
-    
 
     //listar produto
     public Handler listarProduto = (Context ctx) -> {
@@ -153,21 +149,21 @@ public class IndexController {
 
     public Handler consultarProduto = (Context ctx) -> {
         List<Venda> vendas = manager.getVenda();
-            
+
         Map<String, Object> dados = new HashMap<>();
-        
+
         List<Map<String, Object>> produtosPorVenda = new ArrayList<>();
-        
+
         for (Venda venda : vendas) {
             List<Map<String, Object>> produtosDaVenda = manager.getProdutoVendido(venda.getId());
-            
+
             Map<String, Object> vendaProdutos = new HashMap<>();
             vendaProdutos.put("idVenda", venda.getId());
             vendaProdutos.put("produtos", produtosDaVenda);
-    
+
             produtosPorVenda.add(vendaProdutos);
         }
-    
+
         dados.put("produtosPorVenda", produtosPorVenda);
         ctx.render("produtoConsultar.html", dados);
     };
@@ -175,5 +171,55 @@ public class IndexController {
     public Handler buscarProduto = (Context ctx) -> {
         ctx.render("produtoBuscar.html");
     };
-    
+
+    public Handler getDeletarVenda = (Context ctx) -> {
+        ctx.render("vendaDeletar.html");
+    };
+
+    public Handler postDeletarVenda = (Context ctx) -> {
+        System.out.println("Delete chamado!");
+
+        int id = 0;
+
+        try {
+            id = Integer.parseInt(ctx.formParam("id"));
+        } catch (NumberFormatException e) {
+            ctx.status(400).result("Erro ao converter valores numéricos.");
+            return;
+        }
+
+        Map<String, Object> dados = new HashMap<>();
+
+        dados.putIfAbsent("mensagem", "");
+
+        boolean removed = manager.deleteVenda(id);
+        dados.put("mensagem", removed ? "Venda removido com sucesso!" : "Nenhum venda encontrado com o id fornecido.");
+        ctx.render("vendaDeletar.html", dados);
+    };
+
+    public Handler getDeletarProduto = (Context ctx) -> {
+        ctx.render("produtoDeletar.html");
+    };
+
+    public Handler postDeletarProduto = (Context ctx) -> {
+        System.out.println("Delete chamado!");
+
+        int id = 0;
+
+        try {
+            id = Integer.parseInt(ctx.formParam("id"));
+        } catch (NumberFormatException e) {
+            ctx.status(400).result("Erro ao converter valores numéricos.");
+            return;
+        }
+
+        Map<String, Object> dados = new HashMap<>();
+
+        dados.putIfAbsent("mensagem", "");
+
+        boolean removed = manager.deleteProduto(id);
+        dados.put("mensagem", removed ? "Produto removido com sucesso!" : "Nenhum produto encontrado com o id fornecido.");
+        ctx.render("produtoDeletar.html", dados);
+    };
+
 }
