@@ -163,61 +163,23 @@ button:hover {
 }
 
 
+
+
 /* consultar produto vendidos*/
-body {
-    font-family: Arial, sans-serif;
-    background-color: #fafafa;
-    padding: 30px;
-    text-align: center;
-}
-
-.consultar-container {
-    max-width: 900px;
-    margin: auto;
-    background-color: #b6c7ff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-}
-
-.consultar-container a {
-    color: #384566;
-    text-decoration: none;
-    font-weight: bold;
-    margin-bottom: 15px;
-    display: inline-block;
-}
-
 .consultar-container a:hover {
     text-decoration: underline;
-}
-
-h1 {
-    font-size: 24px;
-    color: #384566;
-    margin-bottom: 20px;
-}
-
-/* Estilo das vendas */
-/* Estilo geral */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #fafafa;
-    margin: 20px;
-    padding: 20px;
 }
 
 .consultar-container {
     max-width: 800px;
     margin: auto;
-    background-color: #ffffff;
-    border: 2px solid #384566;
+    background-color: #b6c7ff;
     border-radius: 8px;
     padding: 20px;
 }
 
 .consultar-container a {
-    color: #384566;
+    color: #1d1d1d;
     text-decoration: none;
     font-weight: bold;
     margin-bottom: 15px;
@@ -230,32 +192,33 @@ body {
 
 h1 {
     font-size: 24px;
-    color: #384566;
+    color:rgb(250, 245, 245);
     margin-bottom: 20px;
     text-align: center;
+    
 }
 
 /* Estilo dos cards de vendas */
 
 .card-container-consultar {
-    border-top: 2px solid #384566;
+    border-top: 2px solid #3d3a3a; /* linha q fica embaixo do consultar vendas*/
     padding-top: 10px;
 }
 
 .card-consultar {
     margin-bottom: 20px;
-    border: 2px solid #b6c7ff;
+    border: 2px solid #d6ddf5;
     border-radius: 8px;
-    background-color: #e8f0ff;
+    background-color: #d3dcf7;
     padding: 10px;
 }
 
 .card-consultar p {
     font-size: 16px;
     color: #384566;
-    background-color: #b6c7ff;
+    background-color: #f5f7ff;
     padding: 8px;
-    border-bottom: 2px solid #664738;
+   
     text-align: center;
     margin: 0;
     border-radius: 4px;
@@ -266,7 +229,7 @@ ul {
     margin: 0;
     padding: 10px;
     background-color: #ffffff;
-    border: 1px solid #ddd;
+    border: 1px solid  #b7c7f0;
     border-radius: 4px;
 }
 
@@ -275,7 +238,7 @@ li {
     grid-template-columns: repeat(5, 1fr); /* Cria 5 colunas iguais */
     gap: 10px;
     font-size: 14px;
-    color: #333;
+    color: #000000;
     padding: 8px 0;
     border-bottom: 1px solid #ddd;
     text-align: center;
@@ -291,7 +254,7 @@ li:first-child::after {
     left: 0;
     width: 100%;
     height: 2px; /* Espessura da linha */
-    background-color: #384566; /* Cor da linha */
+    
 }
 li:last-child {
     border-bottom: none;
@@ -303,12 +266,12 @@ li span {
 
 span strong {
     font-weight: bold;
-    color: #384566;
+    color: #000000;
 }
 
 /* Destaque no hover */
 .card-consultar:hover {
-    box-shadow: 0 4px 8px rgba(134, 60, 60, 0.2);
+    box-shadow: 0 4px 8px rgba(52, 101, 124, 0.2);
     transform: scale(1.02);
     transition: transform 0.2s ease-in-out;
 }
