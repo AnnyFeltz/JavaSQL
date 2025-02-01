@@ -20,9 +20,14 @@ public class App {
         app.get("/produto-buscar", indexController.buscarProduto);
         
         app.get("/produto-listar", indexController.listarProduto);
+
         app.get("/produto-vendido", indexController.consultarProduto);
         app.get("/venda-total", indexController.consultarVenda);
+        
         app.get("/estoque-visualizar", indexController.visualizarEstoque);
         app.get("/venda-visualizar", indexController.visualizarVenda);
+
+        app.get("/produto-deletar", indexController.deletarProduto);
+        app.get("/venda-deletar", indexController.deletarVenda);
     }
 }

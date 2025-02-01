@@ -23,7 +23,6 @@ public class Manager {
         itemVenda = new ArrayList<>();
     }
 
-    //#region Produto
     //adicionar
     public void addProduto(Produto p) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
@@ -55,48 +54,47 @@ public class Manager {
     //atualizar
     public boolean updateProduto(Produto p) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
-    
+
             System.out.println("Conectado!");
             // Atualizar o preço do produto
             String sqlProduto = "UPDATE ESTOQUE_PRODUTO SET nome = ?, descricao = ?, preco = ?, quantidade_estoque = ? WHERE id_produto = ?";
             PreparedStatement pstmProduto = con.prepareStatement(sqlProduto);
-    
+
             pstmProduto.setString(1, p.getNome());
             pstmProduto.setString(2, p.getDescricao());
             pstmProduto.setDouble(3, p.getPreco());
             pstmProduto.setInt(4, p.getQuantidadeEstoque());
             pstmProduto.setInt(5, p.getId());
-    
+
             int resProduto = pstmProduto.executeUpdate();
-    
+
             if (resProduto == 1) {
                 // Atualizar o subtotal de todos os itens de venda relacionados a esse produto
                 String sqlItemVenda = "UPDATE ESTOQUE_ITEM_VENDA SET PRECO_UNITARIO = ?, SUBTOTAL = PRECO_UNITARIO * QUANTIDADE WHERE ID_PRODUTO = ?";
                 PreparedStatement pstmItemVenda = con.prepareStatement(sqlItemVenda);
-    
+
                 pstmItemVenda.setDouble(1, p.getPreco());
                 pstmItemVenda.setInt(2, p.getId());
-    
+
                 int resItemVenda = pstmItemVenda.executeUpdate();
-    
+
                 // Atualizar o total da venda
                 String sqlTotalVenda = "UPDATE ESTOQUE_VENDA v SET v.VALOR_TOTAL = (SELECT SUM(ei.SUBTOTAL) FROM ESTOQUE_ITEM_VENDA ei WHERE ei.ID_VENDA = v.ID_VENDA) WHERE v.ID_VENDA IN (SELECT DISTINCT ID_VENDA FROM ESTOQUE_ITEM_VENDA WHERE ID_PRODUTO = ?)";
                 PreparedStatement pstmTotalVenda = con.prepareStatement(sqlTotalVenda);
-    
+
                 pstmTotalVenda.setInt(1, p.getId());
                 int resTotalVenda = pstmTotalVenda.executeUpdate();
-    
+
                 return resProduto == 1 && resItemVenda > 0 && resTotalVenda > 0;  // Retorna true se tudo foi atualizado corretamente
             }
-    
+
             return false; // Retorna false se não atualizou o produto
-    
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
-    
 
     //procurar produto por id
     public Produto getProdutoAtualizar(int id) {
@@ -163,8 +161,6 @@ public class Manager {
         return this.produto;
     }
 
-    //#endregion
-    //#region Venda
     //pegar/listar
     public List<Venda> getVenda() {
         this.venda.clear();
@@ -193,11 +189,8 @@ public class Manager {
 
         return this.venda;
     }
-    //#endregion
 
-    //#region Item_Venda
-    //#endregion
-
+    //pegar produtos vendidos
     public List<Map<String, Object>> getProdutoVendido(int idVenda) {
         List<Map<String, Object>> produtosDaVenda = new ArrayList<>();
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
@@ -233,5 +226,55 @@ public class Manager {
         }
 
         return produtosDaVenda;  // Retorna a lista de produtos ou uma lista vazia
+    }
+
+    //deletar venda
+    public boolean deleteVenda(int id) {
+
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
+            System.out.println("Conectado!");
+
+            String sql = "DELETE FROM ESTOQUE_VENDA WHERE id_venda = ?";
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            pstm.setInt(1, id);
+
+            int res = pstm.executeUpdate();
+
+            if (res == 1) {
+                System.out.println("Venda removida com sucesso!");
+                return true; // Sucesso
+            } else {
+                System.out.println("Nenhum registro encontrado para o id informado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao remover venda: " + e.getMessage());
+        }
+        return false; // Falha
+    }
+
+    //deletar produto
+    public boolean delete(String cpf) {
+
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
+            System.out.println("Conectado!");
+
+            String sql = "DELETE FROM OO_ALUNO WHERE cpf = ?";
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            pstm.setString(1, cpf);
+
+            int res = pstm.executeUpdate();
+
+            if (res == 1) {
+                System.out.println("Aluno removido com sucesso!");
+                return true; // Sucesso
+            } else {
+                System.out.println("Nenhum registro encontrado para o CPF informado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao remover aluno: " + e.getMessage());
+        }
+        return false; // Falha
     }
 }
