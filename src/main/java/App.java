@@ -22,7 +22,6 @@ public class App {
         app.get("/produto-listar", indexController.listarProduto);
 
         app.get("/produto-vendido", indexController.consultarProduto);
-        app.get("/venda-total", indexController.consultarVenda);
         
         app.get("/estoque-visualizar", indexController.visualizarEstoque);
         app.get("/venda-visualizar", indexController.visualizarVenda);

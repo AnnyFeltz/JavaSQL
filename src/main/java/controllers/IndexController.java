@@ -134,9 +134,6 @@ public class IndexController {
         ctx.render("vendaVisualizar.html", dados);
     };
 
-    public Handler consultarVenda = (Context ctx) -> {
-        ctx.render("vendaConsultar.html");
-    };
 
     public Handler visualizarEstoque = (Context ctx) -> {
         List<Produto> lista = manager.getProduto();
