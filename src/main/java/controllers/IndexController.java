@@ -71,7 +71,13 @@ public class IndexController {
             dados.put("produto", produto);
             ctx.render("produtoAtualizar.html", dados);
         } else {
+            // Se o produto não for encontrado, renderiza a página de erro
+            Map<String, Object> dados = new HashMap<>();
+            dados.put("mensagem", "Produto não encontrado!");
+            dados.put("nome", "ID " + id);
+    
             ctx.status(404).result("Produto não encontrado");
+            ctx.render("produto-nao-encontrado.html", dados);
         }
     };
 
@@ -190,9 +196,18 @@ public class IndexController {
         dados.putIfAbsent("mensagem", "");
 
         boolean removed = manager.deleteVenda(id);
-        dados.put("mensagem", removed ? "Venda removido com sucesso!" : "Nenhum venda encontrado com o id fornecido.");
+        if (removed) {
+            dados.put("mensagem", "Venda removida com sucesso!");
+        } else {
+            dados.put("mensagem", "Venda não encontrada com o ID fornecido.");
+            
+            // Renderiza a página de erro personalizada
+            ctx.render("venda-nao-encontrada.html", dados);
+            return;  // Evita renderizar a página de deletar após o erro
+        }
         ctx.render("vendaDeletar.html", dados);
     };
+    
 
     public Handler getDeletarProduto = (Context ctx) -> {
         ctx.render("produtoDeletar.html");
@@ -200,22 +215,30 @@ public class IndexController {
 
     public Handler postDeletarProduto = (Context ctx) -> {
         System.out.println("Delete chamado!");
-
+    
         int id = 0;
-
+    
         try {
             id = Integer.parseInt(ctx.formParam("id"));
         } catch (NumberFormatException e) {
             ctx.status(400).result("Erro ao converter valores numéricos.");
             return;
         }
-
+    
         Map<String, Object> dados = new HashMap<>();
-
+    
         dados.putIfAbsent("mensagem", "");
-
+    
         boolean removed = manager.deleteProduto(id);
-        dados.put("mensagem", removed ? "Produto removido com sucesso!" : "Nenhum produto encontrado com o id fornecido.");
+        if (removed) {
+            dados.put("mensagem", "Produto removido com sucesso!");
+        } else {
+            dados.put("mensagem", "Produto não encontrado com o ID fornecido.");
+            
+            // Renderiza a página de erro personalizada
+            ctx.render("produto-n-encontrado.html", dados);
+            return;  // Evita renderizar a página de deletar após o erro
+        }
         ctx.render("produtoDeletar.html", dados);
     };
 

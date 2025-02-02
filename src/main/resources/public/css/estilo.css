@@ -82,6 +82,7 @@ a{
     box-shadow: 10px 2px 4px rgba(0, 0, 0, 0.1);
     width: 600px;
     height: 400px;
+    margin: 40px;
 }
 
 form {
@@ -105,7 +106,7 @@ input {
 }
 
 button {
-    background-color: #46576f;
+    background-color: #000000;
     color: white;
     border: none;
     padding: 15px;
@@ -115,6 +116,7 @@ button {
     width: 100%;
     justify-content: center;
     display: flex;
+    margin: 8px
 }
 
 
@@ -335,6 +337,10 @@ span strong {
 }
 
 .botao-voltar{
+    text-align: center;
+}
+
+.botao-voltarAdd {
     text-align: center;
 }
 

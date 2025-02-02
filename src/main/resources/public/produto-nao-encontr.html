@@ -1,24 +1,23 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atualizar Produto</title>
+    <title>Produto Não Encontrado</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: fafafa;
-            color: #000000; 
+            background-color: #ffffff;
+            color: #000000;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
         }
 
         .container {
-            background-color: #b6c7ff;
+            background-color: #b7c7f0;
             padding: 20px 30px;
             border-radius: 8px;
             box-shadow: 10px 6px 9px rgba(0, 0, 0, 0.2);
@@ -29,7 +28,7 @@
 
         h1 {
             font-size: 24px;
-            color: #000500;
+            color: #000000;
             margin-bottom: 20px;
         }
 
@@ -51,34 +50,16 @@
         }
 
         a:hover {
-            background-color: #000000;
+            background-color: #333333;
         }
-
-        
     </style>
 </head>
-
 <body>
     <div class="container">
         <h1>${mensagem}</h1>
-        <p><strong>Nome:</strong> ${nome}</p>
+        <p>O produto com <strong>${nome}</strong> não foi encontrado no sistema.</p>
 
-        <#if descricao??>
-            <p><strong>Descrição:</strong> ${descricao}</p>
-        </#if>
-
-        <#if preco??>
-            <p><strong>Preço:</strong> ${preco}</p>
-        </#if>
-
-        <#if quantidadeEstoque??>
-            <p><strong>Quantidade:</strong> ${quantidadeEstoque}</p>
-        </#if>
-
-   
         <a href="/">Voltar</a>
     </div>
 </body>
-
 </html>
-
