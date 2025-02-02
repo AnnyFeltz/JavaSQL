@@ -274,3 +274,67 @@ span strong {
     transition: transform 0.2s ease-in-out;
 }
 
+   /*excluir */
+#produto-deletar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width:  200%;
+    background-color: #f9f9f9; /* Fundo claro */
+}
+
+.excluir-form {
+    background-color: #d0dbff; /* Fundo branco */
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 10px 9px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.excluir-form label {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.excluir-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.excluir-form input:focus {
+    border-color: #202220; /* Cor de destaque ao focar */
+    outline: none;
+}
+
+.excluir-form button {
+    width: 95%;
+    height: 80%;
+    padding: 10px;
+    background-color: #000000;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    align-self: center;
+    display: flex;
+}
+
+.excluir-form button:hover {
+    background-color: #272b27;
+}
+
+.botao-voltar{
+    text-align: center;
+}
+
