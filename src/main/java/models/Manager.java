@@ -36,7 +36,6 @@ public class Manager {
             pstm.setDouble(3, p.getPreco());
             pstm.setInt(4, p.getQuantidadeEstoque());
 
-            //frufru
             int res = pstm.executeUpdate();
             if (res == 1) {
                 System.out.println("Inserido!");
@@ -56,7 +55,6 @@ public class Manager {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
-            // Atualizar o preço do produto
             String sqlProduto = "UPDATE ESTOQUE_PRODUTO SET nome = ?, descricao = ?, preco = ?, quantidade_estoque = ? WHERE id_produto = ?";
             PreparedStatement pstmProduto = con.prepareStatement(sqlProduto);
 
@@ -69,7 +67,6 @@ public class Manager {
             int resProduto = pstmProduto.executeUpdate();
 
             if (resProduto == 1) {
-                // Atualizar o subtotal de todos os itens de venda relacionados a esse produto
                 String sqlItemVenda = "UPDATE ESTOQUE_ITEM_VENDA SET PRECO_UNITARIO = ?, SUBTOTAL = PRECO_UNITARIO * QUANTIDADE WHERE ID_PRODUTO = ?";
                 PreparedStatement pstmItemVenda = con.prepareStatement(sqlItemVenda);
 
@@ -78,17 +75,16 @@ public class Manager {
 
                 int resItemVenda = pstmItemVenda.executeUpdate();
 
-                // Atualizar o total da venda
                 String sqlTotalVenda = "UPDATE ESTOQUE_VENDA v SET v.VALOR_TOTAL = (SELECT SUM(ei.SUBTOTAL) FROM ESTOQUE_ITEM_VENDA ei WHERE ei.ID_VENDA = v.ID_VENDA) WHERE v.ID_VENDA IN (SELECT DISTINCT ID_VENDA FROM ESTOQUE_ITEM_VENDA WHERE ID_PRODUTO = ?)";
                 PreparedStatement pstmTotalVenda = con.prepareStatement(sqlTotalVenda);
 
                 pstmTotalVenda.setInt(1, p.getId());
                 int resTotalVenda = pstmTotalVenda.executeUpdate();
 
-                return resProduto == 1 && resItemVenda > 0 && resTotalVenda > 0;  // Retorna true se tudo foi atualizado corretamente
+                return resProduto == 1;
             }
 
-            return false; // Retorna false se não atualizou o produto
+            return false;
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -98,24 +94,19 @@ public class Manager {
 
     //procurar produto por id
     public Produto getProdutoAtualizar(int id) {
-        Produto produto = null; // Inicializando a variável produto
+        Produto produto = null;
 
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
 
             System.out.println("Conectado!");
-            // SQL corrigido para fazer SELECT e não UPDATE
             String sql = "SELECT * FROM ESTOQUE_PRODUTO WHERE id_produto = ?";
             PreparedStatement pstm = con.prepareStatement(sql);
 
-            // Definir o parâmetro de ID no SQL
             pstm.setInt(1, id);
 
-            // Executar a consulta
             ResultSet rs = pstm.executeQuery();
 
-            // Verificar se encontrou o produto
             if (rs.next()) {
-                // Criar o objeto Produto a partir do resultado da consulta
                 produto = new Produto(
                         rs.getInt("id_produto"),
                         rs.getString("nome"),
@@ -129,7 +120,7 @@ public class Manager {
             System.out.println("Erro ao buscar produto por ID: " + e.getMessage());
         }
 
-        return produto;  // Retorna o produto ou null se não encontrado
+        return produto; 
     }
 
     //pegar/listar 
@@ -197,19 +188,16 @@ public class Manager {
 
             System.out.println("Conectado!");
 
-            // SQL para pegar os produtos associados à venda
             String sql = "SELECT p.id_produto, p.nome, iv.quantidade, p.preco, iv.subtotal "
                     + "FROM ESTOQUE_ITEM_VENDA iv "
                     + "JOIN ESTOQUE_PRODUTO p ON iv.id_produto = p.id_produto "
                     + "WHERE iv.id_venda = ?";
             PreparedStatement pstm = con.prepareStatement(sql);
 
-            // Definir o parâmetro de ID da venda
             pstm.setInt(1, idVenda);
 
             ResultSet rs = pstm.executeQuery();
 
-            // Adicionar cada produto na lista com os detalhes
             while (rs.next()) {
                 Map<String, Object> produtoDetalhado = new HashMap<>();
                 produtoDetalhado.put("idProduto", rs.getInt("id_produto"));
@@ -225,19 +213,17 @@ public class Manager {
             System.out.println("Erro ao buscar produtos da venda: " + e.getMessage());
         }
 
-        return produtosDaVenda;  // Retorna a lista de produtos ou uma lista vazia
+        return produtosDaVenda;
     }
 
     //deletar venda
     public boolean deleteVenda(int id) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
-            // Remover primeiro os itens de venda associados à venda
             String sqlItens = "DELETE FROM ESTOQUE_ITEM_VENDA WHERE id_venda = ?";
             PreparedStatement pstmItens = con.prepareStatement(sqlItens);
             pstmItens.setInt(1, id);
             pstmItens.executeUpdate();
 
-            // Depois, remover a venda
             String sqlVenda = "DELETE FROM ESTOQUE_VENDA WHERE id_venda = ?";
             PreparedStatement pstmVenda = con.prepareStatement(sqlVenda);
             pstmVenda.setInt(1, id);
@@ -254,31 +240,26 @@ public class Manager {
     public boolean deleteProduto(int id) {
         try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
     
-            // Etapa 1: Obter os IDs das vendas que têm o produto
             String sqlVendasComProduto = "SELECT DISTINCT ei.ID_VENDA FROM ESTOQUE_ITEM_VENDA ei WHERE ei.ID_PRODUTO = ?";
             PreparedStatement pstmVendasComProduto = con.prepareStatement(sqlVendasComProduto);
             pstmVendasComProduto.setInt(1, id);
             ResultSet rsVendas = pstmVendasComProduto.executeQuery();
     
-            // Guardar os IDs das vendas em uma lista
             List<Integer> vendasIds = new ArrayList<>();
             while (rsVendas.next()) {
                 vendasIds.add(rsVendas.getInt("ID_VENDA"));
             }
     
-            // Etapa 2: Excluir o produto da tabela ESTOQUE_ITEM_VENDA
             String sqlDeleteItemVenda = "DELETE FROM ESTOQUE_ITEM_VENDA WHERE ID_PRODUTO = ?";
             PreparedStatement pstmDeleteItemVenda = con.prepareStatement(sqlDeleteItemVenda);
             pstmDeleteItemVenda.setInt(1, id);
-            int rowsAffectedItens = pstmDeleteItemVenda.executeUpdate(); // Exclui o produto dos itens de venda
+            int rowsAffectedItens = pstmDeleteItemVenda.executeUpdate(); 
     
-            // Etapa 3: Excluir o produto da tabela ESTOQUE_PRODUTO
             String sqlDeleteProduto = "DELETE FROM ESTOQUE_PRODUTO WHERE ID_PRODUTO = ?";
             PreparedStatement pstmDeleteProduto = con.prepareStatement(sqlDeleteProduto);
             pstmDeleteProduto.setInt(1, id);
-            int rowsAffectedProduto = pstmDeleteProduto.executeUpdate(); // Exclui o produto
+            int rowsAffectedProduto = pstmDeleteProduto.executeUpdate();
     
-            // Etapa 4: Atualizar o valor total das vendas
             if (!vendasIds.isEmpty()) {
                 StringBuilder vendasInClause = new StringBuilder();
                 for (int i = 0; i < vendasIds.size(); i++) {
@@ -291,14 +272,12 @@ public class Manager {
                 String sqlAtualizaVendas = "UPDATE ESTOQUE_VENDA v SET v.VALOR_TOTAL = (SELECT SUM(ei.SUBTOTAL) FROM ESTOQUE_ITEM_VENDA ei WHERE ei.ID_VENDA = v.ID_VENDA) WHERE v.ID_VENDA IN (" + vendasInClause + ")";
                 PreparedStatement pstmAtualizaVendas = con.prepareStatement(sqlAtualizaVendas);
     
-                // Define os parâmetros para os IDs das vendas
                 for (int i = 0; i < vendasIds.size(); i++) {
                     pstmAtualizaVendas.setInt(i + 1, vendasIds.get(i));
                 }
     
-                int rowsAffectedVendas = pstmAtualizaVendas.executeUpdate(); // Atualiza as vendas
+                int rowsAffectedVendas = pstmAtualizaVendas.executeUpdate();
     
-                // Verificar se todas as etapas foram bem-sucedidas
                 return rowsAffectedItens > 0 && rowsAffectedProduto > 0 && rowsAffectedVendas > 0;
             } else {
                 return false;

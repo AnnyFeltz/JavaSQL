@@ -15,7 +15,7 @@ public class ItemVenda {
         this.precoUnitario = precoUnitario;
         this.idVenda = idVenda;
         this.produto = produto;
-        this.subtotal = quantidade * precoUnitario; // Calcular subtotal na hora da criação
+        this.subtotal = quantidade * precoUnitario;
     }
 
     // Método para calcular o subtotal
@@ -38,7 +38,7 @@ public class ItemVenda {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
-        this.subtotal = calcularSubtotal();  // Atualiza o subtotal quando a quantidade mudar
+        this.subtotal = calcularSubtotal(); 
     }
 
     public double getPrecoUnitario() {
@@ -47,7 +47,7 @@ public class ItemVenda {
 
     public void setPrecoUnitario(double precoUnitario) {
         this.precoUnitario = precoUnitario;
-        this.subtotal = calcularSubtotal();  // Atualiza o subtotal quando o preço mudar
+        this.subtotal = calcularSubtotal(); 
     }
 
     public double getSubtotal() {

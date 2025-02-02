@@ -71,7 +71,6 @@ public class IndexController {
             dados.put("produto", produto);
             ctx.render("produtoAtualizar.html", dados);
         } else {
-            // Se o produto não for encontrado, renderiza a página de erro
             Map<String, Object> dados = new HashMap<>();
             dados.put("mensagem", "Produto não encontrado!");
             dados.put("nome", "ID " + id);
@@ -235,9 +234,8 @@ public class IndexController {
         } else {
             dados.put("mensagem", "Produto não encontrado com o ID fornecido.");
             
-            // Renderiza a página de erro personalizada
             ctx.render("produto-n-encontrado.html", dados);
-            return;  // Evita renderizar a página de deletar após o erro
+            return;
         }
         ctx.render("produtoDeletar.html", dados);
     };
