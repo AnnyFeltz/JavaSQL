@@ -25,7 +25,7 @@ public class Manager {
 
     //adicionar
     public void addProduto(Produto p) {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
 
             System.out.println("Conectado!");
             String sql = "INSERT INTO ESTOQUE_PRODUTO(nome, descricao, preco, quantidade_estoque) VALUES (?,?,?,?)";
@@ -52,7 +52,7 @@ public class Manager {
 
     //atualizar
     public boolean updateProduto(Produto p) {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
 
             System.out.println("Conectado!");
             String sqlProduto = "UPDATE ESTOQUE_PRODUTO SET nome = ?, descricao = ?, preco = ?, quantidade_estoque = ? WHERE id_produto = ?";
@@ -96,7 +96,7 @@ public class Manager {
     public Produto getProdutoAtualizar(int id) {
         Produto produto = null;
 
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
 
             System.out.println("Conectado!");
             String sql = "SELECT * FROM ESTOQUE_PRODUTO WHERE id_produto = ?";
@@ -127,7 +127,7 @@ public class Manager {
     public List<Produto> getProduto() {
         this.produto.clear();
 
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
 
             String sql = "SELECT * FROM ESTOQUE_PRODUTO";
             PreparedStatement pstm = con.prepareStatement(sql);
@@ -155,7 +155,7 @@ public class Manager {
     //pegar/listar
     public List<Venda> getVenda() {
         this.venda.clear();
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
 
             System.out.println("Conectado!");
             String sql = "SELECT * FROM ESTOQUE_VENDA ";
@@ -184,7 +184,8 @@ public class Manager {
     //pegar produtos vendidos
     public List<Map<String, Object>> getProdutoVendido(int idVenda) {
         List<Map<String, Object>> produtosDaVenda = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
 
             System.out.println("Conectado!");
 
@@ -218,7 +219,8 @@ public class Manager {
 
     //deletar venda
     public boolean deleteVenda(int id) {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
+
             String sqlItens = "DELETE FROM ESTOQUE_ITEM_VENDA WHERE id_venda = ?";
             PreparedStatement pstmItens = con.prepareStatement(sqlItens);
             pstmItens.setInt(1, id);
@@ -238,7 +240,7 @@ public class Manager {
 
     //deletar produto
     public boolean deleteProduto(int id) {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://wagnerweinert.com.br:3306/tads24_ana", "tads24_ana", "tads24_ana")) {
+        try (Connection con = FabricaConexao.getInstance().getConnection()) {
     
             String sqlVendasComProduto = "SELECT DISTINCT ei.ID_VENDA FROM ESTOQUE_ITEM_VENDA ei WHERE ei.ID_PRODUTO = ?";
             PreparedStatement pstmVendasComProduto = con.prepareStatement(sqlVendasComProduto);
